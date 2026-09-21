@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnLoop — Study smarter, find what you don't know.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF7EF;
+    --paper-line: #E7DEC7;
+    --card: #FFFFFF;
+    --ink: #22283A;
+    --ink-soft: #5B6478;
+    --coral: #EF6F5B;
+    --coral-deep: #D85940;
+    --teal: #1F9E93;
+    --teal-deep: #16776E;
+    --gold: #F0B23D;
+    --gold-deep: #D99A22;
+    --violet: #7C6FE0;
+    --violet-deep: #6459C9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--paper-line);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--ink);
+  }
+
+  .wordmark span { color: var(--coral); }
+
+  nav {
+    display: flex;
+    gap: 28px;
+  }
+
+  nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.97rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  nav a:hover, nav a:focus-visible { color: var(--ink); outline: none; }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  main { padding: 64px 0 40px; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .kicker {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--violet-deep);
+    display: inline-block;
+    transform: rotate(-3deg);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.3rem, 4.2vw, 3.15rem);
+    line-height: 1.14;
+    color: var(--ink);
+  }
+
+  .highlight {
+    position: relative;
+    white-space: nowrap;
+  }
+  .highlight::before {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px; bottom: 3px;
+    height: 0.5em;
+    background: var(--gold);
+    opacity: 0.55;
+    z-index: -1;
+    transform: rotate(-1deg);
+    border-radius: 3px 8px 3px 8px;
+  }
+
+  .lede {
+    margin-top: 22px;
+    font-size: 1.14rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 34em;
+  }
+
+  .actions {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+
+  .cta {
+    display: inline-block;
+    text-decoration: none;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--coral);
+    border: 2px solid var(--ink);
+    padding: 13px 28px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .cta:hover, .cta:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
+    outline: none;
+  }
+
+  .cta:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  .secondary-link {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.02rem;
+    border-bottom: 2px solid var(--teal);
+    padding-bottom: 2px;
+  }
+  .secondary-link:hover, .secondary-link:focus-visible { color: var(--teal-deep); outline: none; }
+
+  .tags {
+    margin-top: 34px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid transparent;
+  }
+  .tag.coral { background: #FCE4DF; color: var(--coral-deep); border-color: #F4BBAE; }
+  .tag.teal { background: #DCF2EF; color: var(--teal-deep); border-color: #A9DED6; }
+  .tag.gold { background: #FBEBCB; color: var(--gold-deep); border-color: #F0CE8B; }
+  .tag.violet { background: #E7E4FA; color: var(--violet-deep); border-color: #C6BFF2; }
+
+  /* sticker board */
+  .sticker-board {
+    position: relative;
+    height: 340px;
+  }
+
+  .sticker-lg {
+    position: absolute;
+    border-radius: 50%;
+    border: 4px solid var(--paper);
+    box-shadow: 0 4px 10px rgba(34,40,58,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .board-book {
+    width: 128px; height: 128px;
+    top: 10px; left: 40px;
+    background: var(--teal);
+    transform: rotate(-8deg);
+  }
+  .board-pencil {
+    width: 104px; height: 104px;
+    top: 40px; right: 20px;
+    background: var(--coral);
+    transform: rotate(14deg);
+  }
+  .board-star {
+    width: 78px; height: 78px;
+    bottom: 90px; left: 0;
+    background: var(--gold);
+    transform: rotate(-6deg);
+  }
+  .board-cap {
+    width: 116px; height: 116px;
+    bottom: 0; right: 60px;
+    background: var(--violet);
+    transform: rotate(9deg);
+  }
+  .board-marker {
+    width: 90px; height: 90px;
+    bottom: 10px; left: 130px;
+    background: var(--coral-deep);
+    transform: rotate(-16deg);
+  }
+
+  /* features */
+  .features {
+    margin-top: 92px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .feature {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 26px 22px 22px;
+    position: relative;
+    box-shadow: 5px 5px 0 rgba(34,40,58,0.10);
+  }
+  .feature:nth-child(1) { transform: rotate(-1deg); }
+  .feature:nth-child(2) { transform: rotate(0.6deg); }
+  .feature:nth-child(3) { transform: rotate(-0.4deg); }
+
+  .feature-tape {
+    position: absolute;
+    top: -12px;
+    left: 22px;
+    width: 54px;
+    height: 20px;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .feature:nth-child(1) .feature-tape { background: rgba(239,111,91,0.5); }
+  .feature:nth-child(2) .feature-tape { background: rgba(31,158,147,0.45); }
+  .feature:nth-child(3) .feature-tape { background: rgba(124,111,224,0.45); }
+
+  .feature-icon {
+    width: 40px; height: 40px;
+  }
+
+  .feature h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-top: 14px;
+    color: var(--ink);
+  }
+
+  .feature p {
+    margin-top: 8px;
+    font-size: 0.96rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  footer {
+    border-top: 1px solid var(--paper-line);
+    padding: 26px 0;
+    margin-top: 90px;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .features { grid-template-columns: 1fr; }
+    .wrap { padding: 0 24px; }
+    .sticker-board { max-width: 420px; margin: 0 auto; height: 300px; }
+    main { padding: 46px 0 30px; }
+    .features { margin-top: 64px; }
+  }
+
+  @media (max-width: 480px) {
+    nav { gap: 14px 16px; flex-wrap: wrap; font-size: 0.88rem; }
+    .header-inner { padding: 18px 0; }
+    .actions { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <div class="wordmark">Learn<span>Loop</span></div>
+    <nav>
+      <a href="#home"><span class="dot" style="background:var(--coral)"></span>Home</a>
+      <a href="#how-it-works"><span class="dot" style="background:var(--teal)"></span>How it works</a>
+      <a href="#features"><span class="dot" style="background:var(--gold)"></span>Features</a>
+      <a href="#about"><span class="dot" style="background:var(--violet)"></span>About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <span class="kicker">Learn. Adapt. Master.</span>
+        <h1>Study smarter, find <span class="highlight">what you don't know.</span></h1>
+        <p class="lede">LearnLoop reads your syllabus, maps every topic, and figures out exactly where you're weak — then keeps teaching and testing until you've actually closed the gap.</p>
+        <div class="actions">
+          <a class="cta" href="{{ url_for('auth') }}">Get started</a>
+          <a class="secondary-link" href="#how-it-works">See how it works</a>
+        </div>
+        <div class="tags">
+          <span class="tag coral">Biology</span>
+          <span class="tag teal">History</span>
+          <span class="tag gold">Economics</span>
+          <span class="tag violet">Languages</span>
+        </div>
+      </div>
+
+      <div class="sticker-board" aria-hidden="true">
+        <div class="sticker-lg board-book">
+          <svg width="46" height="46" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 10 C16 6 8 5 5 6.5 V29 C8 27.5 16 28.5 20 32 C24 28.5 32 27.5 35 29 V6.5 C32 5 24 6 20 10 Z"
+                  stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M20 10 V32" stroke="#fff" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <div class="sticker-lg board-pencil">
+          <svg width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15.5" y="4" width="9" height="26" rx="1.5" transform="rotate(8 20 17)" fill="#fff" stroke="#fff" stroke-width="1.2"/>
+            <path d="M16.8 28.5 L23.6 29.6 L20.6 36 Z" transform="rotate(8 20 17)" fill="var(--coral-deep)" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="sticker-lg board-star">
+          <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6 L24 16 L34 16 L26 22 L29 32 L20 26 L11 32 L14 22 L6 16 L16 16 Z" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="sticker-lg board-cap">
+          <svg width="42" height="42" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 9 L36 16 L20 23 L4 16 Z" fill="#fff"/>
+            <path d="M11 19 V27 C11 29.5 15 31.5 20 31.5 C25 31.5 29 29.5 29 27 V19" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M35 16.5 V25" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sticker-lg board-marker">
+          <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="14" width="20" height="12" rx="2" fill="#fff"/>
+            <path d="M30 15 L36 20 L30 25 Z" fill="#fff"/>
+            <rect x="12" y="16" width="16" height="3" rx="1.5" fill="var(--violet-deep)" opacity="0.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="features" id="features">
+      <div class="feature">
+        <div class="feature-tape"></div>
+        <svg class="feature-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="10" r="4" stroke="var(--coral-deep)" stroke-width="2"/>
+          <circle cx="28" cy="14" r="4" stroke="var(--coral-deep)" stroke-width="2"/>
+          <circle cx="14" cy="28" r="4" stroke="var(--coral-deep)" stroke-width="2"/>
+          <path d="M15 12L25 14M12 14V24M17 27L25 17" stroke="var(--coral-deep)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h3>Maps your syllabus</h3>
+        <p>Upload your syllabus PDF and LearnLoop breaks it into units, topics, and subtopics automatically.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-tape"></div>
+        <svg class="feature-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="22" width="6" height="12" fill="var(--teal-deep)"/>
+          <rect x="17" y="14" width="6" height="20" fill="var(--teal-deep)"/>
+          <rect x="28" y="6" width="6" height="28" fill="var(--teal-deep)"/>
+        </svg>
+        <h3>Finds your weak spots</h3>
+        <p>A short diagnostic quiz builds a mastery score per topic, so you know exactly what needs the work.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-tape"></div>
+        <svg class="feature-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 6 L24 16 L34 16 L26 22 L29 32 L20 26 L11 32 L14 22 L6 16 L16 16 Z" stroke="var(--violet-deep)" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        <h3>Adapts every question</h3>
+        <p>Struggling with a topic? Questions get simpler and more scaffolded — then harder again as you improve.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>LearnLoop</span>
+    <span>An adaptive study companion</span>
+  </div>
+</footer>
+
+</body>
+</html>

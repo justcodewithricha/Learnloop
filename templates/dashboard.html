@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnLoop — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FBF7EF;
+    --paper-line: #E7DEC7;
+    --ink: #22283A;
+    --ink-soft: #5B6478;
+    --coral-deep: #D85940;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    border-bottom: 1px solid var(--paper-line);
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+  .logout {
+    color: var(--coral-deep);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  main { padding: 60px 40px; }
+  h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; }
+  p { margin-top: 14px; color: var(--ink-soft); max-width: 40em; line-height: 1.6; }
+</style>
+</head>
+<body>
+  <header>
+    <span class="wordmark">LearnLoop</span>
+    <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+  </header>
+  <main>
+    <h1>Welcome, {{ name }}.</h1>
+    <p>This is a placeholder — the real study loop (syllabus upload, knowledge map, diagnostic quiz, mastery tracking) goes here next. For now, this page just confirms your login/signup and session are working end to end.</p>
+  </main>
+</body>
+</html>
