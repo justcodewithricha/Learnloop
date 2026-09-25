@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LearnLoop — Study smarter, find what you don't know.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Space+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FBF7EF;
+    --paper: #F5EFE4;
     --paper-line: #E7DEC7;
     --card: #FFFFFF;
     --ink: #22283A;
@@ -24,6 +24,10 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+  }
 
   body {
     background: var(--paper);
@@ -52,10 +56,12 @@
   }
 
   .wordmark {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 1.4rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
     color: var(--ink);
+    display: flex;
+    align-items: center;
   }
 
   .wordmark span { color: var(--coral); }
@@ -91,6 +97,8 @@
     grid-template-columns: 1.1fr 0.9fr;
     gap: 50px;
     align-items: center;
+    min-height: 80vh;
+    position: relative;
   }
 
   .kicker {
@@ -101,6 +109,8 @@
     display: inline-block;
     transform: rotate(-3deg);
     margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
   }
 
   h1 {
@@ -109,6 +119,8 @@
     font-size: clamp(2.3rem, 4.2vw, 3.15rem);
     line-height: 1.14;
     color: var(--ink);
+    position: relative;
+    z-index: 2;
   }
 
   .highlight {
@@ -133,6 +145,8 @@
     line-height: 1.65;
     color: var(--ink-soft);
     max-width: 34em;
+    position: relative;
+    z-index: 2;
   }
 
   .actions {
@@ -141,6 +155,8 @@
     align-items: center;
     gap: 22px;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
   }
 
   .cta {
@@ -179,70 +195,135 @@
   }
   .secondary-link:hover, .secondary-link:focus-visible { color: var(--teal-deep); outline: none; }
 
-  .tags {
-    margin-top: 34px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1.5px solid transparent;
-  }
-  .tag.coral { background: #FCE4DF; color: var(--coral-deep); border-color: #F4BBAE; }
-  .tag.teal { background: #DCF2EF; color: var(--teal-deep); border-color: #A9DED6; }
-  .tag.gold { background: #FBEBCB; color: var(--gold-deep); border-color: #F0CE8B; }
-  .tag.violet { background: #E7E4FA; color: var(--violet-deep); border-color: #C6BFF2; }
-
-  /* sticker board */
-  .sticker-board {
-    position: relative;
-    height: 340px;
-  }
-
+  /* left-side floating stickers */
   .sticker-lg {
     position: absolute;
     border-radius: 50%;
-    border: 4px solid var(--paper);
+    border: 3px solid var(--paper);
     box-shadow: 0 4px 10px rgba(34,40,58,0.18);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
+    opacity: 0.8;
   }
 
   .board-book {
-    width: 128px; height: 128px;
-    top: 10px; left: 40px;
+    width: 90px; height: 90px;
+    top: -20px; left: -30px;
     background: var(--teal);
     transform: rotate(-8deg);
   }
   .board-pencil {
-    width: 104px; height: 104px;
-    top: 40px; right: 20px;
+    width: 70px; height: 70px;
+    top: -40px; left: 340px;
     background: var(--coral);
     transform: rotate(14deg);
   }
   .board-star {
-    width: 78px; height: 78px;
-    bottom: 90px; left: 0;
+    width: 60px; height: 60px;
+    bottom: 5%; left: -80px;
     background: var(--gold);
     transform: rotate(-6deg);
   }
   .board-cap {
-    width: 116px; height: 116px;
-    bottom: 0; right: 60px;
+    width: 80px; height: 80px;
+    bottom: -10px; left: 320px;
     background: var(--violet);
     transform: rotate(9deg);
   }
   .board-marker {
-    width: 90px; height: 90px;
-    bottom: 10px; left: 130px;
+    width: 70px; height: 70px;
+    top: 35%; left: -130px;
     background: var(--coral-deep);
     transform: rotate(-16deg);
+  }
+
+  /* Mockup Board */
+  .mockup-board {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .quiz-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 12px 30px rgba(34,40,58,0.12);
+    border: 2px solid var(--paper-line);
+    transform: rotate(2deg);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .quiz-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--violet-deep);
+    border-radius: 12px;
+    z-index: -1;
+    transform: rotate(-4deg) scale(0.98);
+    opacity: 0.15;
+  }
+
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .topic-tag {
+    background: #E7E4FA;
+    color: var(--violet-deep);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .mastery-badge {
+    background: #FCE4DF;
+    color: var(--coral-deep);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .quiz-question {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+
+  .quiz-opt {
+    border: 2px solid var(--paper-line);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .quiz-opt.correct {
+    border-color: var(--teal);
+    background: #DCF2EF;
+    color: var(--teal-deep);
+  }
+
+  .adapting-text {
+    display: block;
+    margin-top: 16px;
+    font-family: 'Caveat', cursive;
+    color: var(--gold-deep);
+    font-size: 1.1rem;
+    text-align: center;
   }
 
   /* features */
@@ -331,11 +412,13 @@
 
 <header>
   <div class="wrap header-inner">
-    <div class="wordmark">Learn<span>Loop</span></div>
+    <div class="wordmark">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="LearnLoop Logo" style="height: 54px; margin-right: 14px; mix-blend-mode: multiply;">
+      Learn<span>Loop</span>
+    </div>
     <nav>
       <a href="#home"><span class="dot" style="background:var(--coral)"></span>Home</a>
-      <a href="#how-it-works"><span class="dot" style="background:var(--teal)"></span>How it works</a>
-      <a href="#features"><span class="dot" style="background:var(--gold)"></span>Features</a>
+      <a href="#features"><span class="dot" style="background:var(--teal)"></span>How it works</a>
       <a href="#about"><span class="dot" style="background:var(--violet)"></span>About</a>
     </nav>
   </div>
@@ -345,26 +428,9 @@
   <div class="wrap">
     <div class="hero">
       <div>
-        <span class="kicker">Learn. Adapt. Master.</span>
-        <h1>Study smarter, find <span class="highlight">what you don't know.</span></h1>
-        <p class="lede">LearnLoop reads your syllabus, maps every topic, and figures out exactly where you're weak — then keeps teaching and testing until you've actually closed the gap.</p>
-        <div class="actions">
-          <a class="cta" href="{{ url_for('auth') }}">Get started</a>
-          <a class="secondary-link" href="#how-it-works">See how it works</a>
-        </div>
-        <div class="tags">
-          <span class="tag coral">Biology</span>
-          <span class="tag teal">History</span>
-          <span class="tag gold">Economics</span>
-          <span class="tag violet">Languages</span>
-        </div>
-      </div>
-
-      <div class="sticker-board" aria-hidden="true">
         <div class="sticker-lg board-book">
           <svg width="46" height="46" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 10 C16 6 8 5 5 6.5 V29 C8 27.5 16 28.5 20 32 C24 28.5 32 27.5 35 29 V6.5 C32 5 24 6 20 10 Z"
-                  stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M20 10 C16 6 8 5 5 6.5 V29 C8 27.5 16 28.5 20 32 C24 28.5 32 27.5 35 29 V6.5 C32 5 24 6 20 10 Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
             <path d="M20 10 V32" stroke="#fff" stroke-width="1.6"/>
           </svg>
         </div>
@@ -392,6 +458,29 @@
             <path d="M30 15 L36 20 L30 25 Z" fill="#fff"/>
             <rect x="12" y="16" width="16" height="3" rx="1.5" fill="var(--violet-deep)" opacity="0.5"/>
           </svg>
+        </div>
+
+        <span class="kicker">Learn. Adapt. Master.</span>
+        <h1>Study smarter, find <span class="highlight">what you don't know.</span></h1>
+        <p class="lede">LearnLoop reads your syllabus, maps every topic, and figures out exactly where you're weak — then keeps teaching and testing until you've actually closed the gap.</p>
+        <div class="actions">
+          <a class="cta" href="{{ url_for('auth') }}" style="width: 100%; max-width: 340px; text-align: center; font-size: 1.15rem; padding: 16px 28px;">Get started</a>
+        </div>
+      </div>
+
+      <div class="mockup-board" aria-hidden="true">
+        <div class="quiz-card">
+          <div class="quiz-header">
+            <span class="topic-tag">Unit 1: InfoSec</span>
+            <span class="mastery-badge">Mastery: 3/10 🔴</span>
+          </div>
+          <p class="quiz-question">Which security concept ensures that authorized users have reliable access to information?</p>
+          <div class="quiz-options">
+            <div class="quiz-opt">A. Confidentiality</div>
+            <div class="quiz-opt">B. Integrity</div>
+            <div class="quiz-opt correct">C. Availability</div>
+            <div class="quiz-opt">D. Authentication</div>
+          </div>
         </div>
       </div>
     </div>
