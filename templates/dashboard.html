@@ -290,67 +290,70 @@
         <div class="upload-box">
           <div class="upload-icon">📚</div>
           <div class="upload-title">New Subject</div>
-          <div class="upload-desc">Drag a PDF to map a new course.</div>
-          <form action="#" method="POST" enctype="multipart/form-data">
-            <button type="button" class="btn-primary">Select PDF</button>
+          <div class="upload-desc">Upload a PDF to map a new course.</div>
+          <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="syllabus_file" accept=".pdf" required style="margin-bottom: 15px;">
+            <button type="submit" class="btn-primary">Upload PDF</button>
           </form>
         </div>
       </div>
 
       <!-- Active Subject / Mastery Map Panel (The main focus) -->
       <div class="panel">
-        <div class="subject-header">
-          <div>
-            <div class="subject-tag">Active Syllabus</div>
-            <h2>Intro to Cyber Security</h2>
-          </div>
-          <div class="overall-mastery">
-            <span class="score">34%</span>
-            <span class="label">Overall Mastery</span>
-          </div>
-        </div>
+        
+        {% if topics %}
+          {% set total_mastery = namespace(value=0) %}
+          {% for t in topics %}
+            {% set total_mastery.value = total_mastery.value + t.mastery %}
+          {% endfor %}
+          {% set average = (total_mastery.value / topics|length)|int %}
 
-        <div class="mastery-map">
+          <div class="subject-header">
+            <div>
+              <div class="subject-tag">Active Syllabus</div>
+              <h2>Your Topics</h2>
+            </div>
+            <div class="overall-mastery">
+              <span class="score">{{ average }}%</span>
+              <span class="label">Overall Mastery</span>
+            </div>
+          </div>
+
+          <div class="mastery-map">
+            
+            {% for t in topics %}
+              {% set color_class = 'danger' %}
+              {% if t.mastery > 75 %}{% set color_class = 'success' %}
+              {% elif t.mastery > 40 %}{% set color_class = 'warning' %}
+              {% endif %}
+
+              <div class="topic-row">
+                <div class="topic-info">
+                  <span>{{ loop.index }}. {{ t.name }}</span>
+                  <div class="topic-actions">
+                    <span class="{{ color_class }}-text">{{ t.mastery }}%</span>
+                    <button class="btn-study">Study</button>
+                  </div>
+                </div>
+                <div class="progress-track"><div class="progress-fill bg-{{ color_class }}" style="width: {{ t.mastery }}%;"></div></div>
+              </div>
+            {% endfor %}
+
+          </div>
+
+          <div class="loop-action">
+            <p>LearnLoop identified <strong>{{ topics[0].name }}</strong> as a topic to practice.</p>
+            <a href="#" class="btn-loop">Enter the Loop</a>
+          </div>
           
-          <div class="topic-row">
-            <div class="topic-info">
-              <span>1. Core Concepts (CIA Triad)</span>
-              <div class="topic-actions">
-                <span class="success-text">85%</span>
-                <button class="btn-study">Study</button>
-              </div>
-            </div>
-            <div class="progress-track"><div class="progress-fill bg-success" style="width: 85%;"></div></div>
+        {% else %}
+          <h2>Your Knowledge Maps</h2>
+          <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <p>You haven't uploaded any syllabi yet.</p>
+            <p style="font-size: 0.9rem; margin-top: 6px;">Upload a PDF on the left to generate your first Mastery Map!</p>
           </div>
-          
-          <div class="topic-row">
-            <div class="topic-info">
-              <span>2. Cryptography Basics</span>
-              <div class="topic-actions">
-                <span class="warning-text">42%</span>
-                <button class="btn-study">Study</button>
-              </div>
-            </div>
-            <div class="progress-track"><div class="progress-fill bg-warning" style="width: 42%;"></div></div>
-          </div>
-
-          <div class="topic-row">
-            <div class="topic-info">
-              <span>3. Network Vulnerabilities</span>
-              <div class="topic-actions">
-                <span class="danger-text">12%</span>
-                <button class="btn-study">Study</button>
-              </div>
-            </div>
-            <div class="progress-track"><div class="progress-fill bg-danger" style="width: 12%;"></div></div>
-          </div>
-
-        </div>
-
-        <div class="loop-action">
-          <p>LearnLoop identified <strong>Network Vulnerabilities</strong> as your weakest topic.</p>
-          <a href="#" class="btn-loop">Enter the Loop</a>
-        </div>
+        {% endif %}
       </div>
     </div>
 

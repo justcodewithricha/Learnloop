@@ -100,8 +100,56 @@ def logout():
 def dashboard():
     if "user_id" not in session:
         return redirect(url_for("auth"))
-    return render_template("dashboard.html", name=session.get("user_name"))
+    
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM topics WHERE user_id = %s", (session["user_id"],))
+            topics = cur.fetchall()
+    finally:
+        conn.close()
+        
+    return render_template("dashboard.html", name=session.get("user_name"), topics=topics)
 
+@app.route("/upload", methods=["POST"])
+def upload():
+    if "user_id" not in session:
+        return redirect(url_for("auth"))
+        
+    if "syllabus_file" not in request.files:
+        flash("No file part", "error")
+        return redirect(url_for("dashboard"))
+        
+    file = request.files["syllabus_file"]
+    if file.filename == "":
+        flash("No selected file", "error")
+        return redirect(url_for("dashboard"))
+        
+    # Save the file
+    filepath = os.path.join("uploads", file.filename)
+    file.save(filepath)
+    
+    # 1. Run the RAG pipeline to chunk, save to Chroma, and extract topics!
+    import rag
+    extracted_topics = rag.ingest_pdf(filepath)
+    
+    # 2. Save these new topics to the Postgres database
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            # First, delete old topics if they uploaded a new syllabus (for the MVP prototype)
+            cur.execute("DELETE FROM topics WHERE user_id = %s", (session["user_id"],))
+            
+            for t_name in extracted_topics:
+                cur.execute("INSERT INTO topics (user_id, name, mastery) VALUES (%s, %s, %s)",
+                            (session["user_id"], t_name, 0))
+        conn.commit()
+    finally:
+        conn.close()
+        
+    return redirect(url_for("dashboard"))
 
 if __name__ == "__main__":
+    # Ensure uploads directory exists
+    os.makedirs("uploads", exist_ok=True)
     app.run(debug=True)
