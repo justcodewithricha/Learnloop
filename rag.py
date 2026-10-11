@@ -43,7 +43,9 @@ def ingest_pdf(pdf_path):
     # Use Qwen to extract topics from the first chunk (usually the intro/table of contents)
     prompt = f"""
     Based on the following text from a syllabus, extract 3 to 4 core topics or units.
-    Return ONLY a comma-separated list of topics, nothing else. Example format: "Cryptography, Network Security, Access Control"
+    Return ONLY a comma-separated list of topics, nothing else. 
+    (For example, if it was a math syllabus, you would return: "Algebra, Geometry, Calculus"). 
+    Do NOT return my example. Read the text and return the real topics.
     
     Text: {chunks[0]}
     """

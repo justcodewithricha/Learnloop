@@ -28,7 +28,7 @@
     font-family: 'Source Sans 3', sans-serif;
     min-height: 100vh;
   }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 40px; }
+  .wrap { max-width: 100%; margin: 0 auto; padding: 0 40px; }
   
   header {
     background: rgba(245, 239, 228, 0.85);
@@ -53,17 +53,60 @@
   }
   .wordmark span { color: var(--coral); }
   
-  .logout {
-    color: var(--ink-soft);
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 0.95rem;
-    border: 1.5px solid var(--paper-line);
-    padding: 6px 14px;
-    border-radius: 6px;
-    transition: all 0.2s;
+  /* Header Profile */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
-  .logout:hover { border-color: var(--coral); color: var(--coral); }
+  .user-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 30px;
+    transition: background 0.2s;
+  }
+  .user-profile:hover { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .avatar {
+    width: 34px; height: 34px;
+    background: var(--coral);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .username { font-weight: 700; font-size: 0.95rem; }
+  
+  .profile-dropdown {
+    position: absolute;
+    top: 100%; right: 0;
+    background: var(--card);
+    border: 1px solid var(--paper-line);
+    border-radius: 12px;
+    width: 180px;
+    box-shadow: 0 10px 25px rgba(34,40,58,0.1);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 100;
+  }
+  .user-profile:hover .profile-dropdown { display: flex; }
+  .profile-dropdown a {
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: 1px solid #F5EFE4;
+    transition: background 0.2s;
+  }
+  .profile-dropdown a:hover { background: #FAFEFD; color: var(--teal-deep); }
+  .profile-dropdown a.logout-link { color: var(--coral-deep); border-bottom: none; }
+  .profile-dropdown a.logout-link:hover { background: #FDECEA; }
   
   main { padding: 60px 0; }
   
@@ -71,7 +114,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
   }
   h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; margin-bottom: 6px; }
   .subtitle { color: var(--ink-soft); font-size: 1.1rem; }
@@ -79,8 +122,9 @@
   /* Dashboard Layout Grid */
   .dash-grid {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
+    grid-template-columns: 300px 1fr;
     gap: 30px;
+    align-items: start;
   }
 
   /* Panels */
@@ -114,6 +158,40 @@
   .upload-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.9; }
   .upload-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; color: var(--teal-deep); }
   .upload-desc { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 24px; max-width: 250px; }
+  
+  /* Gamification Section */
+  .streak-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #FFF5F0;
+    border: 1px solid #FCD3C9;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .fire-icon { font-size: 2.5rem; }
+  .streak-info strong { display: block; font-size: 1.1rem; color: var(--coral-deep); font-weight: 800; }
+  .streak-info span { font-size: 0.85rem; color: var(--ink-soft); font-weight: 600; }
+  
+  .badges-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    background: #F5EFE4;
+    border: 2px solid var(--paper-line);
+    cursor: help;
+    transition: transform 0.2s;
+  }
+  .badge.earned { background: #FFF9E6; border-color: var(--gold); box-shadow: 0 4px 10px rgba(240, 178, 61, 0.2); }
+  .badge.locked { opacity: 0.4; filter: grayscale(1); }
+  .badge:hover { transform: translateY(-3px); }
   
   .btn-primary {
     display: inline-block;
@@ -272,31 +350,81 @@
       <img src="{{ url_for('static', filename='logo.png') }}" alt="LearnLoop Logo" style="height: 38px; margin-right: 12px; mix-blend-mode: multiply;">
       Learn<span>Loop</span>
     </a>
-    <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+    <div class="header-actions">
+      <div class="user-profile">
+        <div class="avatar">{{ name[0] | upper }}</div>
+        <span class="username">{{ name }}</span>
+        <div class="profile-dropdown">
+          <a href="#">My Profile</a>
+          <a href="#">Settings</a>
+          <a href="{{ url_for('logout') }}" class="logout-link">Log out</a>
+        </div>
+      </div>
+    </div>
   </header>
   
   <main class="wrap">
-    <div class="hero-dash">
-      <div>
-        <h1>Welcome back, {{ name }}!</h1>
-        <p class="subtitle">Ready to master your next subject?</p>
-      </div>
-    </div>
-
-    <div class="dash-grid">
-      <!-- Upload Panel (Smaller sidebar now) -->
-      <div class="panel">
-        <h2>Add Syllabus</h2>
-        <div class="upload-box">
-          <div class="upload-icon">📚</div>
-          <div class="upload-title">New Subject</div>
-          <div class="upload-desc">Upload a PDF to map a new course.</div>
-          <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="syllabus_file" accept=".pdf" required style="margin-bottom: 15px;">
-            <button type="submit" class="btn-primary">Upload PDF</button>
-          </form>
+    
+    <div style="display: flex; gap: 40px; align-items: flex-start;">
+      
+      <!-- Gamification Sidebar (Left Edge) -->
+      <div class="panel" style="width: 260px; flex-shrink: 0; margin-top: 104px;">
+        <h2>Your Journey</h2>
+        <div class="streak-box">
+          <span class="fire-icon">🔥</span>
+          <div class="streak-info">
+            <strong>3 Day Streak!</strong>
+            <span>Keep it up, {{ name.split(' ')[0] }}!</span>
+          </div>
+        </div>
+        
+        <h3 style="font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 12px; text-transform: uppercase;">Badges</h3>
+        <div class="badges-container">
+          <div class="badge earned" title="First Syllabus Uploaded">📚</div>
+          <div class="badge earned" title="Perfect Quiz Score">🎯</div>
+          <div class="badge locked" title="7 Day Streak">🔥</div>
+          <div class="badge locked" title="Mastered 1 Topic">👑</div>
         </div>
       </div>
+
+      <!-- Main Content Area -->
+      <div style="flex-grow: 1; max-width: 1040px; margin: 0 auto;">
+        
+        <div class="hero-dash">
+          <div>
+            <h1>Welcome back, {{ name }}!</h1>
+            <p class="subtitle">Ready to master your next subject?</p>
+          </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div style="margin-bottom: 30px;">
+            {% for category, message in messages %}
+              <div style="padding: 12px 20px; border-radius: 8px; font-weight: 600; 
+                          background: {% if category == 'error' %}#FDECEA; color: var(--coral-deep); border: 1px solid var(--coral);{% else %}#E7F7F5; color: var(--teal-deep); border: 1px solid var(--teal);{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="dash-grid">
+          
+          <!-- Upload Panel -->
+          <div class="panel">
+            <h2>Add Syllabus</h2>
+            <div class="upload-box">
+              <div class="upload-icon">📚</div>
+              <div class="upload-title">New Subject</div>
+              <div class="upload-desc">Upload a PDF to map a new course.</div>
+              <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" name="syllabus_file" accept=".pdf" required style="margin-bottom: 15px;">
+                <button type="submit" class="btn-primary">Upload PDF</button>
+              </form>
+            </div>
+          </div>
 
       <!-- Active Subject / Mastery Map Panel (The main focus) -->
       <div class="panel">
@@ -355,6 +483,8 @@
           </div>
         {% endif %}
       </div>
+    </div>
+    </div>
     </div>
 
   </main>
